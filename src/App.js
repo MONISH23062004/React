@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn Devops
+          Learn AI
         </a>
       </header>
     </div>
