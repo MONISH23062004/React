@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn CI/CD
+          Learn CI/CD changes
         </a>
       </header>
     </div>
