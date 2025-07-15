@@ -15,20 +15,21 @@ jobs:
   build-and-push:
     name: Build Docker Image & Push to ECR
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::495599773901:role/github-actions-ecr-role
           aws-region: ${{ env.REGION }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
@@ -54,11 +55,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            # Login to ECR
-            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws configure set default.region ${{ env.REGION }}
-
+            # Login to ECR using EC2 instance role (make sure EC2 has pull permissions)
             aws ecr get-login-password --region ${{ env.REGION }} \
               | docker login --username AWS --password-stdin $ECR_REGISTRY
 
