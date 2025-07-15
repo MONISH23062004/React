@@ -52,11 +52,16 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
+          username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           script: |
-            # Login to ECR using EC2 instance role (make sure EC2 has pull permissions)
-            aws ecr get-login-password --region ${{ env.REGION }} \
+            IMAGE_NAME=my-app
+            ECR_REGISTRY=495599773901.dkr.ecr.us-east-1.amazonaws.com
+            ECR_REPO=my-app
+            REGION=us-east-1
+
+            # Login to ECR using instance role or EC2 permissions
+            aws ecr get-login-password --region $REGION \
               | docker login --username AWS --password-stdin $ECR_REGISTRY
 
             # Stop and remove existing container if running
