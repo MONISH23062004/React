@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn CI/CD changes 217 PM
+          Learn CI/CD changes 217 PM Day 6
         </a>
       </header>
     </div>
