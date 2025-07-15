@@ -70,4 +70,4 @@ jobs:
 
             # Pull and run latest image
             docker pull $ECR_REGISTRY/$ECR_REPO:latest
-            docker run -d -p 80:80 --name $IMAGE_NAME $ECR_REGISTRY/$ECR_REPO:latest
+            docker run -d -p 8080:80 --name $IMAGE_NAME $ECR_REGISTRY/$ECR_REPO:latest
